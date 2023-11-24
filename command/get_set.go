@@ -31,12 +31,15 @@ func RunSet(cache *store.Cache, args ...string) string {
 		case "px":
 			x, _ := strconv.Atoi(args[i+1])
 			item.TTL = time.Now().Add(time.Duration(x) * time.Millisecond).UnixNano()
+			i++
 		case "pxat":
 			pxat, _ := strconv.Atoi(args[i+1])
 			item.TTL = int64(pxat) * 1000000
+			i++
 		case "exat":
 			exat, _ := strconv.Atoi(args[i+1])
 			item.TTL = int64(exat) * 1000000000
+			i++
 		}
 	}
 	cache.Set(args[0], item)
