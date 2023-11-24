@@ -1,4 +1,4 @@
-# Write Your Own wc Tool
+# Write Your Own Redis Server
 
 ## Description
 The challenge was to use build your own Redis Server.
