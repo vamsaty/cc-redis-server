@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// RunSet sets the value of the key
 func RunSet(cache *store.Cache, args ...string) string {
 	item := store.Item{
 		Key:   args[0],
@@ -46,6 +47,7 @@ func RunSet(cache *store.Cache, args ...string) string {
 	return "OK"
 }
 
+// RunGet returns the value of the key if present, else "(nil)"
 func RunGet(cache *store.Cache, args ...string) string {
 	if item, found := cache.Get(args[0]); found { // is present
 		return item.Value

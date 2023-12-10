@@ -14,6 +14,7 @@ import (
 
 var cache = store.GetCacheInstance()
 
+// handleConnection handles a connection
 func handleConnection(conn net.Conn) {
 	defer func() {
 		err := conn.Close()
@@ -33,6 +34,7 @@ func handleConnection(conn net.Conn) {
 			PanicIf(err)
 			continue
 		}
+		// the request is always an array
 		if token[0] == '*' {
 			items := resp.ParseArray(token, reader)
 			output := command.Execute(items, cache)
@@ -44,8 +46,6 @@ func handleConnection(conn net.Conn) {
 }
 
 func main() {
-
-	// listener
 	listener, err := net.Listen("tcp", ":6379")
 	PanicIf(err)
 	for {

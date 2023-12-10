@@ -4,6 +4,7 @@ import (
 	"github.com/vamsaty/cc-redis-server/store"
 )
 
+// ExecMap is a map of command to function
 var ExecMap = map[string]func(*store.Cache, ...string) string{
 	"SET":    RunSet,
 	"GET":    RunGet,
@@ -15,6 +16,7 @@ var ExecMap = map[string]func(*store.Cache, ...string) string{
 	"DECR":   RunDecr,
 }
 
+// Execute executes the command
 func Execute(args [][]string, cache *store.Cache) string {
 	var data []string
 	for i := range args {
