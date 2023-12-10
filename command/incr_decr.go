@@ -6,13 +6,13 @@ import (
 )
 
 // RunIncr runs the INCR command
-func RunIncr(cache *store.Cache, args ...string) string { return runAdd(cache, 1, args...) }
+func RunIncr(cache store.Cacher, args ...string) string { return runAdd(cache, 1, args...) }
 
 // RunDecr runs the DECR command
-func RunDecr(cache *store.Cache, args ...string) string { return runAdd(cache, -1, args...) }
+func RunDecr(cache store.Cacher, args ...string) string { return runAdd(cache, -1, args...) }
 
 // runAdd helper function to run the INCR and DECR commands
-func runAdd(cache *store.Cache, addNum int, args ...string) string {
+func runAdd(cache store.Cacher, addNum int, args ...string) string {
 	key := args[0]
 	if x, _ := cache.Contains(key); x {
 		value, _ := cache.Get(key)

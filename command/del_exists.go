@@ -6,7 +6,7 @@ import (
 )
 
 // RunExists checks if the key exists in the cache
-func RunExists(cache *store.Cache, args ...string) string {
+func RunExists(cache store.Cacher, args ...string) string {
 	count := 0
 	for i := range args {
 		if x, _ := cache.Contains(args[i]); x {
@@ -17,7 +17,7 @@ func RunExists(cache *store.Cache, args ...string) string {
 }
 
 // RunDel deletes the key from the cache
-func RunDel(cache *store.Cache, args ...string) string {
+func RunDel(cache store.Cacher, args ...string) string {
 	count := 0
 	for i := range args {
 		if x, _ := cache.Contains(args[i]); x {

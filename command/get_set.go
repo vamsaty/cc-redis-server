@@ -7,12 +7,13 @@ import (
 )
 
 // RunSet sets the value of the key
-func RunSet(cache *store.Cache, args ...string) string {
+func RunSet(cache store.Cacher, args ...string) string {
 	item := store.Item{
 		Key:   args[0],
 		Value: args[1],
-		TTL:   0,
+		TTLns: 0, // stored nanoseconds
 	}
+
 	for i := 2; i < len(args); i++ {
 		switch args[i] {
 		case "xx":
@@ -26,20 +27,24 @@ func RunSet(cache *store.Cache, args ...string) string {
 				return "OK"
 			}
 		case "ex":
+			// seconds from now
 			x, _ := strconv.Atoi(args[i+1])
-			item.TTL = time.Now().Add(time.Duration(x) * time.Second).UnixNano()
+			item.TTLns = time.Now().Add(time.Duration(x) * time.Second).UnixNano()
 			i++
 		case "px":
+			// milliseconds from now
 			x, _ := strconv.Atoi(args[i+1])
-			item.TTL = time.Now().Add(time.Duration(x) * time.Millisecond).UnixNano()
+			item.TTLns = time.Now().Add(time.Duration(x) * time.Millisecond).UnixNano()
 			i++
 		case "pxat":
+			// milliseconds since epoch
 			pxat, _ := strconv.Atoi(args[i+1])
-			item.TTL = int64(pxat) * 1000000
+			item.TTLns = int64(pxat) * 1000000
 			i++
 		case "exat":
+			// seconds since epoch
 			exat, _ := strconv.Atoi(args[i+1])
-			item.TTL = int64(exat) * 1000000000
+			item.TTLns = int64(exat) * 1000000000
 			i++
 		}
 	}
@@ -48,7 +53,7 @@ func RunSet(cache *store.Cache, args ...string) string {
 }
 
 // RunGet returns the value of the key if present, else "(nil)"
-func RunGet(cache *store.Cache, args ...string) string {
+func RunGet(cache store.Cacher, args ...string) string {
 	if item, found := cache.Get(args[0]); found { // is present
 		return item.Value
 	}

@@ -5,7 +5,7 @@ import (
 )
 
 // ExecMap is a map of command to function
-var ExecMap = map[string]func(*store.Cache, ...string) string{
+var ExecMap = map[string]func(store.Cacher, ...string) string{
 	"SET":    RunSet,
 	"GET":    RunGet,
 	"PING":   RunPing,
@@ -14,10 +14,12 @@ var ExecMap = map[string]func(*store.Cache, ...string) string{
 	"DEL":    RunDel,
 	"INCR":   RunIncr,
 	"DECR":   RunDecr,
+	// DEBUG commands
+	"DEBUG": RunDebug,
 }
 
 // Execute executes the command
-func Execute(args [][]string, cache *store.Cache) string {
+func Execute(args [][]string, cache store.Cacher) string {
 	var data []string
 	for i := range args {
 		data = append(data, args[i][1])

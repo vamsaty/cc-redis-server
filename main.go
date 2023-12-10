@@ -28,8 +28,11 @@ func handleConnection(conn net.Conn) {
 
 	// read the request
 	reader := bufio.NewReader(conn)
+	var err error
+	var token []rune
 	for {
-		token, err := resp.ReadToken(reader)
+		// read the token
+		token, err = resp.ReadToken(reader)
 		if err != nil {
 			if err == io.EOF {
 				return
@@ -43,7 +46,13 @@ func handleConnection(conn net.Conn) {
 			output := command.Execute(items, cache)
 			output = fmt.Sprintf("+%s\r\n", output)
 			_, err = conn.Write([]byte(output))
-			ccUtils.PanicIf(err)
+			if err != nil {
+				if err == io.EOF {
+					return
+				}
+				ccUtils.PanicIf(err)
+				continue
+			}
 		}
 	}
 }
