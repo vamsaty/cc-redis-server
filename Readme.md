@@ -34,6 +34,5 @@ Contains the code for the data store. This is used by the server to store/fetch 
 
 ---
 
-#### known issues
-redis-benchmark doesn't work if there are no commands run previously on the server.
-After a server starts use redis-cli to run a command and then use redis-benchmark.
+###### PS: Humble request to provide feedback on the code and the challenge. Kindly raise a bug in case of any issues.
+###### Thanks!
