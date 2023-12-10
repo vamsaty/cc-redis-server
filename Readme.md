@@ -8,31 +8,32 @@ It currently supports basic Redis commands like -
 2. GET
 3. PING
 4. ECHO
+5. DEL
+6. EXISTS
+7. INCR
+8. DECR
 ---
 ## Usage
-
 Steps to build the binary and execute it -
 ```
 go build -o redis-server ./cmd/main.go && ./redis-server
 ``` 
 ---
-## Flags
-
-----
-
-
 ## File Structure
 
-### executor
-Defines the supported commands. Executes the commands in the datastore and generates a response.
+### command
+Contains the code for the commands executed by the server. Each file can contain multiple commands.
+The commands implemented in the file are mentioned in the file's name.
+e.g. del_exists.go -> contains DEL and EXISTS commands.
 
-### server
-Contains the code for the server. Starts a listener (at 6379 port) and connection handler (concurrent).
+### resp
+Contains the code for the RESP protocol. This is used by the server to parse the commands sent by the client.
 
-### tokenizer
-Contains the code for the tokenizer. This is used by the server to parse the commands sent by the client.
-
-### types
-Defines the RESP datatypes and helper function to convert RESP types to string & vice-versa.
+### store
+Contains the code for the data store. This is used by the server to store/fetch the data.
 
 ---
+
+#### known issues
+redis-benchmark doesn't work if there are no commands run previously on the server.
+After a server starts use redis-cli to run a command and then use redis-benchmark.

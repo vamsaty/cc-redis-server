@@ -1,5 +1,7 @@
 package resp
 
+/* NOTE: This is unused as of 10/12/2023 (dd/mm/yyyy) */
+
 type DataType int
 
 const (
