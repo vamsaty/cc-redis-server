@@ -27,5 +27,5 @@ func Execute(args [][]string, cache *store.Cache) string {
 	if !ok {
 		return "ERR unknown command '" + data[0] + "'"
 	}
-	return execFunc(cache, data...)
+	return execFunc(cache, data[1:]...)
 }

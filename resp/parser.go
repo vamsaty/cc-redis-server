@@ -2,7 +2,7 @@ package resp
 
 import (
 	"bufio"
-	. "github.com/vamsaty/cc-redis-server/utils"
+	ccUtils "github.com/vamsaty/cc-utils"
 	"strconv"
 )
 
@@ -24,15 +24,15 @@ func ReadToken(reader *bufio.Reader) ([]rune, error) {
 
 func ParseArray(token []rune, reader *bufio.Reader) [][]string {
 	arraySize, err := strconv.Atoi(string(token[1:]))
-	PanicIf(err)
+	ccUtils.PanicIf(err)
 
 	var tokens [][]string
 	for arraySize > 0 {
 		metadata, err := ReadToken(reader)
-		PanicIf(err)
+		ccUtils.PanicIf(err)
 
 		data, err := ReadToken(reader)
-		PanicIf(err)
+		ccUtils.PanicIf(err)
 
 		tokens = append(
 			tokens,

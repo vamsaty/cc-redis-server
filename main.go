@@ -6,7 +6,7 @@ import (
 	"github.com/vamsaty/cc-redis-server/command"
 	"github.com/vamsaty/cc-redis-server/resp"
 	"github.com/vamsaty/cc-redis-server/store"
-	. "github.com/vamsaty/cc-redis-server/utils"
+	ccUtils "github.com/vamsaty/cc-utils"
 	"io"
 	"log"
 	"net"
@@ -16,11 +16,14 @@ var cache = store.GetCacheInstance()
 
 // handleConnection handles a connection
 func handleConnection(conn net.Conn) {
+	fmt.Println("connection received")
+
 	defer func() {
 		err := conn.Close()
 		if err != nil {
 			log.Println("error closing connection", err)
 		}
+		fmt.Println("connection closed")
 	}()
 
 	// read the request
@@ -31,7 +34,7 @@ func handleConnection(conn net.Conn) {
 			if err == io.EOF {
 				return
 			}
-			PanicIf(err)
+			ccUtils.PanicIf(err)
 			continue
 		}
 		// the request is always an array
@@ -40,14 +43,15 @@ func handleConnection(conn net.Conn) {
 			output := command.Execute(items, cache)
 			output = fmt.Sprintf("+%s\r\n", output)
 			_, err = conn.Write([]byte(output))
-			PanicIf(err)
+			ccUtils.PanicIf(err)
 		}
 	}
 }
 
 func main() {
+	fmt.Println("Starting redis server...")
 	listener, err := net.Listen("tcp", ":6379")
-	PanicIf(err)
+	ccUtils.PanicIf(err)
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
